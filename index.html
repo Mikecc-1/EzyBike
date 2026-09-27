@@ -120,10 +120,17 @@
 
     <!-- 1. HERO SECTION -->
     <section id="inici" class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden pt-20">
-        <!-- Background Image (Using images/image_4.png - urban riding) -->
-        <div class="absolute inset-0 z-0">
-            <img src="images/image_4.png" alt="Persona conduint una EzyBike turquesa per la ciutat" class="w-full h-full object-cover object-center" />
-            <div class="absolute inset-0 hero-overlay"></div>
+        <!-- Background Image & Video -->
+        <div class="absolute inset-0 z-0 bg-brand-dark">
+            <!-- Fallback Image (shows after video ends) -->
+            <img src="images/image_4.png" alt="Persona conduint una EzyBike turquesa per la ciutat" class="absolute inset-0 w-full h-full object-cover object-center" />
+            
+            <!-- Video (no loop, added ID and transition) -->
+            <video id="hero-video" autoplay muted playsinline class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 z-10">
+                <source src="https://github.com/Mikecc-1/EzyBike/raw/refs/heads/main/images/vid_1.mov" type="video/mp4">
+            </video>
+            
+            <div class="absolute inset-0 hero-overlay z-20"></div>
         </div>
 
         <!-- Hero Content -->
@@ -735,6 +742,16 @@
                     navbar.classList.remove('shadow-md');
                 }
             });
+
+            // Fade out video when it finishes
+            const heroVideo = document.getElementById('hero-video');
+            if (heroVideo) {
+                heroVideo.addEventListener('ended', () => {
+                    heroVideo.style.opacity = '0';
+                    // Optional: remove it from the DOM after the 1-second fade transition
+                    setTimeout(() => heroVideo.remove(), 1000);
+                });
+            };
         });
     </script>
 </body>
