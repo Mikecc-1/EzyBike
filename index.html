@@ -743,17 +743,30 @@
                 }
             });
 
-            // Fade out video when it finishes, and ensure it plays on load
+            // Video and Image Loop Logic
             const heroVideo = document.getElementById('hero-video');
             if (heroVideo) {
-                // Force play in case the autoplay attribute hangs
+                // Ensure it plays on load
                 heroVideo.play().catch(error => {
-                    console.log("Autoplay was prevented or loading delayed:", error);
+                    console.log("Autoplay delayed:", error);
                 });
 
+                // When video finishes: fade out, wait 3 seconds, replay and fade in
                 heroVideo.addEventListener('ended', () => {
+                    // 1. Fade out to reveal the image behind it
                     heroVideo.style.opacity = '0';
-                    setTimeout(() => heroVideo.remove(), 1000);
+                    
+                    // 2. Wait 3 seconds (3000 milliseconds)
+                    setTimeout(() => {
+                        // Reset video to the beginning
+                        heroVideo.currentTime = 0; 
+                        
+                        // Play the video, then fade it back in
+                        heroVideo.play().then(() => {
+                            heroVideo.style.opacity = '1';
+                        }).catch(error => console.log("Replay prevented:", error));
+                        
+                    }, 3000); // Change 3000 to adjust how long the image shows
                 });
             };
         });
